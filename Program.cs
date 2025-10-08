@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Backend.APIEndpoints;
 using Backend.Models.Seeders;
+using Backend.Repository;
 using Backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,13 +52,14 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 //DI Services
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<ProductRepository>();
+builder.Services.AddScoped<ProductServices>();
 var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-
     SeedData.Initialize(services);
 }
 // Configure the HTTP request pipeline.
@@ -69,6 +71,7 @@ if (app.Environment.IsDevelopment())
 
 
 app.MapUserEndpoints();
+app.MapProductEndpoints();
 app.UseHttpsRedirection();
 
 
