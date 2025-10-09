@@ -1,6 +1,7 @@
 namespace Backend.Repository;
 using Microsoft.EntityFrameworkCore;
 using backend.Data;
+using Backend.DTO;
 using Backend.Models;
 public class ProductRepository
 {
@@ -10,13 +11,53 @@ public class ProductRepository
         _context = context;
     }
 
-    public async Task<List<Product>> GetAllProductsAsync()
+    public async Task<List<ProductDTO>> GetAllProductsAsync()
     {
         return await _context.Product
             .Include(p => p.Brand)
             .Include(p => p.Category)
-            // .Include(p => p.ProductImages)
-            .ToListAsync();
+            .Select(p => new ProductDTO
+            {
+                ProductName = p.ProductName,
+                ProductDescription = p.Description,
+                ProductPrice = p.Price,
+                BrandId = p.Brand.BrandId,
+                CategoryId = p.Category.CategoryId,
+                Stock = p.Stock,
+                CategoryName = p.Category.CategoryName,
+                BrandName = p.Brand.BrandName
+            }).ToListAsync();
     }
-    
+
+    public async Task<string> AddProductsAsync(ProductDTO p)
+    {
+        try
+        {
+            // 🧩 Map ProductDTO to Product entity
+            var product = new Product
+            {
+                ProductName = p.ProductName,
+                Description = p.ProductDescription,
+                Price = p.ProductPrice,
+                Stock = p.Stock,
+                CategoryId = p.CategoryId,
+                BrandId = p.BrandId
+            };
+
+            // 💾 Add to DbContext
+            _context.Product.Add(product);
+
+            // 🚀 Save changes
+            await _context.SaveChangesAsync();
+
+            // ✅ Return success message
+            return $"✅ Product '{product.ProductName}' added successfully with ID {product.ProductId}.";
+        }
+        catch (Exception ex)
+        {
+            // ⚠️ Handle errors and return readable message
+            return $"❌ Failed to add product: {ex.Message}";
+        }
+    }
+
 }
