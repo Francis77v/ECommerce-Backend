@@ -40,6 +40,11 @@ public class EntityDbContext : DbContext
             {
                 BrandId = -1,
                 BrandName = "Samsung"
+            },
+        new Brand
+            {
+                BrandId = 1,
+                BrandName = "Marvel"
             }
         );
 
@@ -48,6 +53,11 @@ public class EntityDbContext : DbContext
             {
                 CategoryId = -1,
                 CategoryName = "Phone"
+            },
+        new Category
+            {
+                CategoryId = 1,
+                CategoryName = "Toy"
             }
         );
 
