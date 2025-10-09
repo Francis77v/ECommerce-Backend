@@ -12,6 +12,11 @@ namespace Backend.APIEndpoints
                 var products = await services.GetProductAsync();
                 return Results.Ok(products);
             });
-        }
+            app.MapPost("api/product/add", async (ProductDTO productDto, ProductServices services) =>
+            {
+                var addProducts = await services.AddProductAsync(productDto);
+                return Results.Ok(addProducts);
+            });
+        }                                   
     }
 }
