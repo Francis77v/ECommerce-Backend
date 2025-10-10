@@ -17,6 +17,11 @@ namespace Backend.APIEndpoints
                 var addProducts = await services.AddProductAsync(productDto);
                 return Results.Ok(addProducts);
             });
+            app.MapDelete("api/product/{productId}", async (int productId, ProductServices services) =>
+            {
+                var deleteProduct = await services.DeleteProductService(productId);
+                return Results.Ok(deleteProduct);
+            });
         }                                   
     }
 }

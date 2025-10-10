@@ -19,4 +19,9 @@ public class ProductServices
     {
         return await _productRepository.AddProductsAsync(productDto);
     }
+
+    public async Task<string> DeleteProductService(int productId)
+    {
+        return await _productRepository.DeleteProductAsync(productId);
+    }
 }

@@ -60,4 +60,18 @@ public class ProductRepository
         }
     }
 
+    public async Task<string> DeleteProductAsync(int productId)
+    {
+        var product = await _context.Product.SingleOrDefaultAsync(p => p.ProductId == productId);
+        if (product is null)
+        {
+            return "Product doesn't exist.";
+        }
+        _context.Product.Remove(product);
+        await _context.SaveChangesAsync();
+        return "Product deleted";
+
+
+    }
+
 }
