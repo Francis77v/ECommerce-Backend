@@ -9,18 +9,23 @@ namespace Backend.APIEndpoints
         {
             app.MapGet("api/products", async (ProductServices services) =>
             {
-                var products = await services.GetProductAsync();
+                var products = await services.GetProductService();
                 return Results.Ok(products);
             });
             app.MapPost("api/product/add", async (ProductDTO productDto, ProductServices services) =>
             {
-                var addProducts = await services.AddProductAsync(productDto);
+                var addProducts = await services.AddProductService(productDto);
                 return Results.Ok(addProducts);
             });
             app.MapDelete("api/product/{productId}", async (int productId, ProductServices services) =>
             {
                 var deleteProduct = await services.DeleteProductService(productId);
                 return Results.Ok(deleteProduct);
+            });
+            app.MapPut("api/product/update/{productId}", async (int productId, ProductDTO productDto, ProductServices services) =>
+            {
+                var updateProduct = await services.UpdateProductService(productId, productDto);
+                return updateProduct;
             });
         }                                   
     }
