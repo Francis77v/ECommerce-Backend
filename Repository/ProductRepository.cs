@@ -70,7 +70,23 @@ public class ProductRepository
         _context.Product.Remove(product);
         await _context.SaveChangesAsync();
         return "Product deleted";
+    }
 
+    public async Task<string> UpdateProductAsync(int productId, ProductDTO productDto)
+    {
+        var product = await _context.Product.SingleOrDefaultAsync((p => p.ProductId == productId));
+        if (product is null)
+        {
+            return "Product doesn't exist";
+        }
+        product.ProductName = productDto.ProductName;
+        product.Description = productDto.ProductDescription;
+        product.Price = productDto.ProductPrice;
+        product.Stock = productDto.Stock;
+        product.CategoryId = productDto.CategoryId;
+        productDto.BrandId = productDto.BrandId;
+        await _context.SaveChangesAsync();
+        return $"Product {productId} updated succesfully";
 
     }
 
