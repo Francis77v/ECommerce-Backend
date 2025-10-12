@@ -11,8 +11,28 @@ public class ProductRepository
         _context = context;
     }
 
-    public async Task<List<ProductDTO>> GetAllProductsAsync()
+    public async Task<List<ProductDTO>> GetProductsAsync()
     {
+        // if (productId.HasValue)
+        // {
+        //     var product = await _context.Product
+        //         .Include(p => p.Brand)
+        //         .Include(p => p.Category)
+        //         .Where(p => p.ProductId == productId.Value)
+        //         .Select(p => new ProductDTO
+        //         {
+        //             ProductName = p.ProductName,
+        //             ProductDescription = p.Description,
+        //             ProductPrice = p.Price,
+        //             BrandId = p.Brand.BrandId,
+        //             CategoryId = p.Category.CategoryId,
+        //             Stock = p.Stock,
+        //             CategoryName = p.Category.CategoryName,
+        //             BrandName = p.Brand.BrandName
+        //         })
+        //         .ToListAsync();
+        //     return product; 
+        // }
         return await _context.Product
             .Include(p => p.Brand)
             .Include(p => p.Category)
@@ -29,11 +49,15 @@ public class ProductRepository
             }).ToListAsync();
     }
 
+    public async Task<Product?> GetProductByIdAsync(int productId)
+    {
+        return await _context.Product.SingleOrDefaultAsync(p => p.ProductId == productId);
+    }
+
     public async Task<string> AddProductsAsync(ProductDTO p)
     {
         try
         {
-            // 🧩 Map ProductDTO to Product entity
             var product = new Product
             {
                 ProductName = p.ProductName,
@@ -43,26 +67,19 @@ public class ProductRepository
                 CategoryId = p.CategoryId,
                 BrandId = p.BrandId
             };
-
-            // 💾 Add to DbContext
             _context.Product.Add(product);
-
-            // 🚀 Save changes
             await _context.SaveChangesAsync();
-
-            // ✅ Return success message
             return $"✅ Product '{product.ProductName}' added successfully with ID {product.ProductId}.";
         }
         catch (Exception ex)
         {
-            // ⚠️ Handle errors and return readable message
             return $"❌ Failed to add product: {ex.Message}";
         }
     }
 
     public async Task<string> DeleteProductAsync(int productId)
     {
-        var product = await _context.Product.SingleOrDefaultAsync(p => p.ProductId == productId);
+        var product = await GetProductByIdAsync(productId);
         if (product is null)
         {
             return "Product doesn't exist.";
@@ -74,10 +91,10 @@ public class ProductRepository
 
     public async Task<string> UpdateProductAsync(int productId, ProductDTO productDto)
     {
-        var product = await _context.Product.SingleOrDefaultAsync((p => p.ProductId == productId));
+        var product = await GetProductByIdAsync(productId);
         if (product is null)
         {
-            return "Product doesn't exist";
+            return "Product doesn't exist.";
         }
         product.ProductName = productDto.ProductName;
         product.Description = productDto.ProductDescription;
@@ -86,7 +103,7 @@ public class ProductRepository
         product.CategoryId = productDto.CategoryId;
         productDto.BrandId = productDto.BrandId;
         await _context.SaveChangesAsync();
-        return $"Product {productId} updated succesfully";
+        return $"Product ID: {productId} updated succesfully";
 
     }
 

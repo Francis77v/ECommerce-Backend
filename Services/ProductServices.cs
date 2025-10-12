@@ -12,7 +12,7 @@ public class ProductServices
 
     public async Task<List<ProductDTO>> GetProductService()
     {
-        return await _productRepository.GetAllProductsAsync();
+        return await _productRepository.GetProductsAsync();
     }
 
     public async Task<string> AddProductService(ProductDTO productDto)
