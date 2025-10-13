@@ -10,14 +10,14 @@ public class ProductServices
         _productRepository = productRepository;
     }
 
-    public async Task<List<ProductDTO>> GetProductService()
+    public async Task<List<ProductGetDTO>> GetProductService()
     {
         return await _productRepository.GetProductsAsync();
     }
 
-    public async Task<string> AddProductService(ProductDTO productDto)
+    public async Task<string> AddProductService(ProductAddDTO productAddDto)
     {
-        return await _productRepository.AddProductsAsync(productDto);
+        return await _productRepository.AddProductsAsync(productAddDto);
     }
 
     public async Task<string> DeleteProductService(int productId)
@@ -25,8 +25,8 @@ public class ProductServices
         return await _productRepository.DeleteProductAsync(productId);
     }
 
-    public async Task<string> UpdateProductService(int productId, ProductDTO productDto)
+    public async Task<string> UpdateProductService(int productId, ProductGetDTO productGetDto)
     {
-        return await _productRepository.UpdateProductAsync(productId, productDto);
+        return await _productRepository.UpdateProductAsync(productId, productGetDto);
     }
 }

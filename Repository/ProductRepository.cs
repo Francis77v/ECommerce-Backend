@@ -11,7 +11,7 @@ public class ProductRepository
         _context = context;
     }
 
-    public async Task<List<ProductDTO>> GetProductsAsync()
+    public async Task<List<ProductGetDTO>> GetProductsAsync()
     {
         // if (productId.HasValue)
         // {
@@ -36,7 +36,7 @@ public class ProductRepository
         return await _context.Product
             .Include(p => p.Brand)
             .Include(p => p.Category)
-            .Select(p => new ProductDTO
+            .Select(p => new ProductGetDTO
             {
                 ProductName = p.ProductName,
                 ProductDescription = p.Description,
@@ -54,7 +54,7 @@ public class ProductRepository
         return await _context.Product.SingleOrDefaultAsync(p => p.ProductId == productId);
     }
 
-    public async Task<string> AddProductsAsync(ProductDTO p)
+    public async Task<string> AddProductsAsync(ProductAddDTO p)
     {
         try
         {
@@ -89,19 +89,19 @@ public class ProductRepository
         return "Product deleted";
     }
 
-    public async Task<string> UpdateProductAsync(int productId, ProductDTO productDto)
+    public async Task<string> UpdateProductAsync(int productId, ProductGetDTO productGetDto)
     {
         var product = await GetProductByIdAsync(productId);
         if (product is null)
         {
             return "Product doesn't exist.";
         }
-        product.ProductName = productDto.ProductName;
-        product.Description = productDto.ProductDescription;
-        product.Price = productDto.ProductPrice;
-        product.Stock = productDto.Stock;
-        product.CategoryId = productDto.CategoryId;
-        productDto.BrandId = productDto.BrandId;
+        product.ProductName = productGetDto.ProductName;
+        product.Description = productGetDto.ProductDescription;
+        product.Price = productGetDto.ProductPrice;
+        product.Stock = productGetDto.Stock;
+        product.CategoryId = productGetDto.CategoryId;
+        productGetDto.BrandId = productGetDto.BrandId;
         await _context.SaveChangesAsync();
         return $"Product ID: {productId} updated succesfully";
 
