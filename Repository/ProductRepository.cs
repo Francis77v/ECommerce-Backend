@@ -107,4 +107,9 @@ public class ProductRepository
 
     }
 
+    public async Task<bool> CheckProductExist(string productName)
+    {
+        return await _context.Product.AnyAsync(p => p.ProductName == productName);
+    }
+
 }

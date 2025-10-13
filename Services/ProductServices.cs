@@ -17,6 +17,10 @@ public class ProductServices
 
     public async Task<string> AddProductService(ProductAddDTO productAddDto)
     {
+        if (await _productRepository.CheckProductExist(productAddDto.ProductName))
+        {
+            return $"{productAddDto.ProductName} already exists.";
+        }
         return await _productRepository.AddProductsAsync(productAddDto);
     }
 
