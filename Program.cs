@@ -10,7 +10,12 @@ using Backend.Models.Seeders;
 using Backend.Repository;
 using Backend.Services;
 
+
 var builder = WebApplication.CreateBuilder(args);
+
+// 1️⃣ Add services
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -66,6 +71,12 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "My Minimal API V1");
+        options.RoutePrefix = string.Empty; // Swagger opens at root URL
+    });
 }
 
 
