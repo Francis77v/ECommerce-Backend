@@ -78,15 +78,9 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = string.Empty; // Swagger opens at root URL
     });
 }
-
-
-
 app.MapUserEndpoints();
 app.MapProductEndpoints();
 app.UseHttpsRedirection();
-
-
-   
 
 app.Run();
 
