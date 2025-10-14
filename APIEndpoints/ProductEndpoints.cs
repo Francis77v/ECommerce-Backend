@@ -11,18 +11,20 @@ namespace Backend.APIEndpoints
             {
                 var products = await services.GetProductService();
                 return Results.Ok(products);
-            }).WithName("GetProducts").WithOpenApi();
-            app.MapPost("api/product/add", async (ProductAddDTO productAddDto, ProductServices services) =>
+            }).WithName("GetProducts").WithOpenApi()
+                .RequireAuthorization(policy => policy.RequireRole("Admin", "Manager"));
+            
+            app.MapPost("api/products/add", async (ProductAddDTO productAddDto, ProductServices services) =>
             {
                 var addProducts = await services.AddProductService(productAddDto);
                 return Results.Ok(addProducts);
             }).WithName("AddProducts").WithOpenApi();
-            app.MapDelete("api/product/{productId}", async (int productId, ProductServices services) =>
+            app.MapDelete("api/products/{productId}", async (int productId, ProductServices services) =>
             {
                 var deleteProduct = await services.DeleteProductService(productId);
                 return Results.Ok(deleteProduct);
             }).WithName("DeleteProducts").WithOpenApi();
-            app.MapPut("api/product/update/{productId}", async (int productId, ProductGetDTO productGetDto, ProductServices services) =>
+            app.MapPut("api/products/update/{productId}", async (int productId, ProductGetDTO productGetDto, ProductServices services) =>
             {
                 var updateProduct = await services.UpdateProductService(productId, productGetDto);
                 return updateProduct;
