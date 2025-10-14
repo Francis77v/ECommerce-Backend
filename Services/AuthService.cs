@@ -33,14 +33,13 @@ public class AuthService
         var userRoles = await _userManager.GetRolesAsync(user);
 
         var claims = new List<Claim>
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, user.UserName!),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.NameIdentifier, user.Id)
-        };
-
-        // Add role claims
-        claims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName!),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
+            }
+            .Concat(userRoles.Select(role => new Claim(ClaimTypes.Role, role)))
+            .ToList();
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -55,4 +54,5 @@ public class AuthService
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
 }
