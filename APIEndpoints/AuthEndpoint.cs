@@ -18,8 +18,12 @@ namespace Backend.APIEndpoints
                         token = token
                     });
                 }
-
                 return Results.BadRequest("Invalid login");
+            });
+            app.MapPost("/api/register", async (UserCreateDTO user, UserServices services) =>
+            {
+                var results = await services.AddUserService(user);
+                return Results.Ok(results);
             });
 
             // app.MapPost("/users", async (UserManager<Users> userManager, Users user) =>
