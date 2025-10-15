@@ -18,17 +18,17 @@ namespace Backend.APIEndpoints
             {
                 var addProducts = await services.AddProductService(productAddDto);
                 return Results.Ok(addProducts);
-            }).WithName("AddProducts").WithOpenApi();
+            }).WithName("AddProducts").WithOpenApi().RequireAuthorization(policy => policy.RequireRole("Admin"));
             app.MapDelete("api/products/{productId}", async (int productId, ProductServices services) =>
             {
                 var deleteProduct = await services.DeleteProductService(productId);
                 return Results.Ok(deleteProduct);
-            }).WithName("DeleteProducts").WithOpenApi();
+            }).WithName("DeleteProducts").WithOpenApi().RequireAuthorization(policy => policy.RequireRole("Admin"));
             app.MapPut("api/products/update/{productId}", async (int productId, ProductGetDTO productGetDto, ProductServices services) =>
             {
                 var updateProduct = await services.UpdateProductService(productId, productGetDto);
                 return updateProduct;
-            }).WithName("UpdateProducts").WithOpenApi();
+            }).WithName("UpdateProducts").WithOpenApi().RequireAuthorization(policy => policy.RequireRole("Admin"));
         }                                   
     }
 }
