@@ -60,6 +60,7 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ProductRepository>();
 builder.Services.AddScoped<ProductServices>();
 var app = builder.Build();
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 using (var scope = app.Services.CreateScope())
@@ -80,7 +81,7 @@ if (app.Environment.IsDevelopment())
 }
 app.MapUserEndpoints();
 app.MapProductEndpoints();
-app.UseHttpsRedirection();
+
 
 app.Run();
 
