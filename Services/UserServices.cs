@@ -12,6 +12,10 @@ public class UserServices
     }
     public async Task<string> AddUserService(UserCreateDTO user)
     {
+        if ((user.Password != user.ConfirmPassword))
+        {
+            return "Password not matched";
+        }
         var addUser = await _repository.AddUser(user);
         return "asdsd";
     }
