@@ -16,8 +16,8 @@ public class UserServices
         {
             return "Password not matched";
         }
-        var addUser = await _repository.AddUser(user);
-        return "asdsd";
+        
+        return await _repository.AddUser(user);
     }
     
 }
