@@ -57,10 +57,13 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 //DI Services
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<AuthRepository>();
 builder.Services.AddScoped<ProductRepository>();
 builder.Services.AddScoped<ProductServices>();
 builder.Services.AddScoped<RegisterUserRepository>();
 builder.Services.AddScoped<RegisterUserServices>();
+builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<UserServices>();
 
 var app = builder.Build();
 app.UseHttpsRedirection();
@@ -82,8 +85,9 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = string.Empty; // Swagger opens at root URL
     });
 }
-app.MapUserEndpoints();
+app.MapHomePageEndpoints();
 app.MapProductEndpoints();
+app.MapUserEndpoints();
 
 
 app.Run();
