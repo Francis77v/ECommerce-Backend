@@ -59,8 +59,8 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ProductRepository>();
 builder.Services.AddScoped<ProductServices>();
-builder.Services.AddScoped<UserRepository>();
-builder.Services.AddScoped<UserServices>();
+builder.Services.AddScoped<RegisterUserRepository>();
+builder.Services.AddScoped<RegisterUserServices>();
 
 var app = builder.Build();
 app.UseHttpsRedirection();

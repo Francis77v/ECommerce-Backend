@@ -3,7 +3,7 @@ using Backend.Services;
 
 namespace Backend.APIEndpoints
 {
-    public static class UserEndpoints
+    public static class HomePageEndpoints
     {
         public static void MapUserEndpoints(this WebApplication app)
         {
@@ -20,9 +20,9 @@ namespace Backend.APIEndpoints
                 }
                 return Results.BadRequest("Invalid login");
             });
-            app.MapPost("/api/register", async (UserCreateDTO user, UserServices services) =>
+            app.MapPost("/api/register", async (RegisterDTO user, RegisterUserServices services) =>
             {
-                var results = await services.AddUserService(user);
+                var results = await services.RegisterUserService(user);
                 return Results.Ok(results);
             });
 
