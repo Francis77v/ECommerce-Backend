@@ -1,15 +1,16 @@
 using Backend.DTO;
+using Backend.Repository;
 using Backend.Services;
 
 namespace Backend.APIEndpoints
 {
     public static class HomePageEndpoints
     {
-        public static void MapUserEndpoints(this WebApplication app)
+        public static void MapHomePageEndpoints(this WebApplication app)
         {
-            app.MapPost("/api/login", async (LoginRequest login, AuthService authService) =>
+            app.MapPost("/api/login", async (LoginRequest login, AuthRepository authRepository) =>
             {
-                var token = await authService.ValidateUserAsync(login.Username, login.Password);
+                var token = await authRepository.ValidateUserAsync(login.Username, login.Password);
                 if (token != null)
                 {
                     return Results.Ok(new
