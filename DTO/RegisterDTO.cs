@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 namespace Backend.DTO;
 
-public class UserCreateDTO
+public class RegisterDTO
 {
     [Required(ErrorMessage = "Username is required.")]
     [StringLength(50, ErrorMessage = "Username must not exceed 50 characters.")]
@@ -19,5 +19,4 @@ public class UserCreateDTO
     [Compare("Password", ErrorMessage = "Passwords do not match.")]
     public string ConfirmPassword { get; set; } = string.Empty;
     
-    public string? Role { get; set; }
 }
