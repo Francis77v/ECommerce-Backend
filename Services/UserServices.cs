@@ -11,8 +11,8 @@ public class UserServices
         _repository = repository;
     }
 
-    public async Task<string> GetUserService()
+    public async Task<List<UserGetDTO>> GetUserService()
     {
-        return "hi from user services";
+        return await _repository.GetUserAsync();
     }
 }
