@@ -64,7 +64,7 @@ builder.Services.AddScoped<RegisterUserRepository>();
 builder.Services.AddScoped<RegisterUserServices>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<UserServices>();
-
+builder.Services.AddLogging();
 var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseAuthentication();
