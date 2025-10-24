@@ -10,6 +10,8 @@ public class EntityDbContext : DbContext
     public DbSet<Brand> Brand { get; set; }
     public DbSet<Category> Category { get; set; }
     public DbSet<ProductImage> ProductImages { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -23,7 +25,7 @@ public class EntityDbContext : DbContext
         modelBuilder.Entity<Product>()
             .HasOne(b => b.Brand)
             .WithMany(p => p.Products)
-            .HasForeignKey(b => b.BrandId)
+            .HasForeignKey(b => b.BrandId)  
             .IsRequired();
         
         modelBuilder.Entity<ProductImage>()
@@ -31,7 +33,16 @@ public class EntityDbContext : DbContext
             .WithMany(i => i.ProductImages)
             .HasForeignKey(p => p.ProductId)
             .IsRequired();
-
+        modelBuilder.Entity<Order>()
+            .HasOne(u => u.User)
+            .WithMany(u => u.Orders)
+            .HasForeignKey(u => u.UserId)
+            .IsRequired();
+        modelBuilder.Entity<OrderItem>()
+            .HasOne(oi => oi.Order)
+            .WithMany(o => o.Items)
+            .HasForeignKey(oi => oi.OrderId)
+            .IsRequired();
 
         var seedDate = new DateTime(2025, 10, 8, 0, 0, 0, DateTimeKind.Utc);
 
