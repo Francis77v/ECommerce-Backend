@@ -31,6 +31,6 @@ public class Product
     
     public bool IsActive { get; set; }
     public ICollection<ProductImage> ProductImages { get; set; } = new List<ProductImage>();
-    
+    public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     
 }

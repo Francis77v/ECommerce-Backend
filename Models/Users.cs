@@ -5,5 +5,5 @@ namespace Backend.Models;
 
 public class Users : IdentityUser
 {
-    
+    public ICollection<Order> Orders { get; set; } = new List<Order>();
 }
