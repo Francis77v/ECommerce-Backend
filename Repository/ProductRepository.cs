@@ -88,8 +88,12 @@ public class ProductRepository
         product.Description = productGetDto.ProductDescription;
         product.Price = productGetDto.ProductPrice;
         product.Stock = productGetDto.Stock;
-        product.CategoryId = productGetDto.category.categoryId;
-        productGetDto.brand.brandId = productGetDto.brand.brandId;
+        // Update foreign keys
+        if (productGetDto.category != null)
+            product.CategoryId = productGetDto.category.categoryId;
+
+        if (productGetDto.brand != null)
+            product.BrandId = productGetDto.brand.brandId;
         await _context.SaveChangesAsync();
         return $"Product ID: {productId} updated succesfully";
 

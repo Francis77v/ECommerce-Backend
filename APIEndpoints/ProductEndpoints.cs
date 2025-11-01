@@ -29,7 +29,7 @@ public static class ProductEndpoint
             return Results.Ok(deleteProduct);
         }).WithName("DeleteProducts");
 
-        Group.MapPut("api/products/update/{productId}",
+        Group.MapPut("update/{productId}",
             async (int productId, ProductGetDTO productGetDto, ProductServices services) =>
             {
                 var updateProduct = await services.UpdateProductService(productId, productGetDto);
