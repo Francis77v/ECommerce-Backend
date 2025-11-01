@@ -8,7 +8,8 @@ namespace Backend.APIEndpoints
     {
         public static void MapHomePageEndpoints(this WebApplication app)
         {
-            app.MapPost("/api/login", async (LoginRequest login, AuthRepository authRepository) =>
+            var group = app.MapGroup("/api").WithTags("HomePage").WithOpenApi().AllowAnonymous();
+            group.MapPost("/login", async (LoginRequest login, AuthRepository authRepository) =>
             {
                 var token = await authRepository.ValidateUserAsync(login.Username, login.Password);
                 if (token != null)
@@ -21,18 +22,12 @@ namespace Backend.APIEndpoints
                 }
                 return Results.BadRequest("Invalid login");
             });
-            app.MapPost("/api/register", async (RegisterDTO user, RegisterUserServices services) =>
+            group.MapPost("/register", async (RegisterDTO user, RegisterUserServices services) =>
             {
                 var results = await services.RegisterUserService(user);
                 return Results.Ok(results);
             });
 
-            // app.MapPost("/users", async (UserManager<Users> userManager, Users user) =>
-            // {
-            //     var result = await userManager.CreateAsync(user, "DefaultPassword123!");
-            //     if (!result.Succeeded) return Results.BadRequest(result.Errors);
-            //     return Results.Ok(user);
-            // });
         }
     }
 }
