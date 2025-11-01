@@ -19,19 +19,8 @@ public class ProductGetDTO
     [Required(ErrorMessage = "Stock quantity is required.")]
     [Range(0, int.MaxValue, ErrorMessage = "Stock cannot be negative.")]
     public int Stock { get; set; }
-
-    [Required(ErrorMessage = "Category ID is required.")]
-    [Range(1, int.MaxValue, ErrorMessage = "Category ID must be a positive number.")]
-    public int CategoryId { get; set; }
-
-    [Required(ErrorMessage = "Brand ID is required.")]
-    [Range(1, int.MaxValue, ErrorMessage = "Brand ID must be a positive number.")]
-    public int BrandId { get; set; }
-
-    // Optional fields (no validation needed unless you want to restrict length)
-    [StringLength(100, ErrorMessage = "Category name cannot exceed 100 characters.")]
-    public string? CategoryName { get; set; }
-
-    [StringLength(100, ErrorMessage = "Brand name cannot exceed 100 characters.")]
-    public string? BrandName { get; set; }
+            
+    // dtos
+    public BrandDTO brand { get; set; }
+    public CategoryDTO category { get; set; }
 }

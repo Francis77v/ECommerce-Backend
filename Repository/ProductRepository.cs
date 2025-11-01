@@ -13,26 +13,7 @@ public class ProductRepository
 
     public async Task<List<ProductGetDTO>> GetProductsAsync()
     {
-        // if (productId.HasValue)
-        // {
-        //     var product = await _context.Product
-        //         .Include(p => p.Brand)
-        //         .Include(p => p.Category)
-        //         .Where(p => p.ProductId == productId.Value)
-        //         .Select(p => new ProductDTO
-        //         {
-        //             ProductName = p.ProductName,
-        //             ProductDescription = p.Description,
-        //             ProductPrice = p.Price,
-        //             BrandId = p.Brand.BrandId,
-        //             CategoryId = p.Category.CategoryId,
-        //             Stock = p.Stock,
-        //             CategoryName = p.Category.CategoryName,
-        //             BrandName = p.Brand.BrandName
-        //         })
-        //         .ToListAsync();
-        //     return product; 
-        // }
+      
         return await _context.Product
             .Include(p => p.Brand)
             .Include(p => p.Category)
@@ -41,12 +22,19 @@ public class ProductRepository
                 ProductName = p.ProductName,
                 ProductDescription = p.Description,
                 ProductPrice = p.Price,
-                BrandId = p.Brand.BrandId,
-                CategoryId = p.Category.CategoryId,
                 Stock = p.Stock,
-                CategoryName = p.Category.CategoryName,
-                BrandName = p.Brand.BrandName
-            }).ToListAsync();
+                category = new CategoryDTO
+                {
+                    categoryId = p.Category.CategoryId,
+                    categoryName = p.Category.CategoryName
+                },
+                brand = new BrandDTO
+                {
+                    brandId = p.Brand.BrandId,
+                    brandName = p.Brand.BrandName
+                }
+            })
+            .ToListAsync();
     }
 
     public async Task<Product?> GetProductByIdAsync(int productId)
@@ -100,8 +88,8 @@ public class ProductRepository
         product.Description = productGetDto.ProductDescription;
         product.Price = productGetDto.ProductPrice;
         product.Stock = productGetDto.Stock;
-        product.CategoryId = productGetDto.CategoryId;
-        productGetDto.BrandId = productGetDto.BrandId;
+        product.CategoryId = productGetDto.category.categoryId;
+        productGetDto.brand.brandId = productGetDto.brand.brandId;
         await _context.SaveChangesAsync();
         return $"Product ID: {productId} updated succesfully";
 
