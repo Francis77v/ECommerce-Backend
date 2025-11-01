@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 // Configure EF Core with PostgreSQL
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<EntityDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDbContext<EntityDbContext>(options => 
@@ -29,7 +29,7 @@ builder.Services.AddDbContext<EntityDbContext>(options =>
 
 //Identity
 builder.Services.AddIdentity<Users, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddEntityFrameworkStores<EntityDbContext>()
     .AddDefaultTokenProviders();
 
 // JWT Auth

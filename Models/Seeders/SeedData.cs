@@ -11,8 +11,8 @@ namespace Backend.Models.Seeders
     {
         public static void Initialize(IServiceProvider serviceProvider)
         {
-            using (var context = new ApplicationDbContext(
-                       serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
+            using (var context = new EntityDbContext(
+                       serviceProvider.GetRequiredService<DbContextOptions<EntityDbContext>>()))
             {
                 var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
                 string[] roles = new[] { "Admin", "Customer" };

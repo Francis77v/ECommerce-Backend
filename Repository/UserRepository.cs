@@ -8,13 +8,13 @@ using Microsoft.AspNetCore.Identity;
 namespace Backend.Repository;
 public class UserRepository
 {
-    private readonly ApplicationDbContext _context;
+    private readonly EntityDbContext _context;
     private readonly UserManager<Users> _manager;
     private readonly SignInManager<Users> _signInManager;
     private readonly ILogger<UserRepository> _logger;
 
     public UserRepository(
-        ApplicationDbContext context,
+        EntityDbContext context,
         UserManager<Users> manager,
         SignInManager<Users> signInManager,
         ILogger<UserRepository> logger)

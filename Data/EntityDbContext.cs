@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 namespace backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Backend.Models;
 
-public class EntityDbContext : DbContext
+public class EntityDbContext : IdentityDbContext<Users>
 {
     public EntityDbContext(DbContextOptions<EntityDbContext> options) : base(options){}
 
@@ -12,7 +14,7 @@ public class EntityDbContext : DbContext
     public DbSet<ProductImage> ProductImages { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
-    
+    public DbSet<UserDetails> UserDetails { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
