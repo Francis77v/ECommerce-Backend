@@ -77,25 +77,28 @@ public class ProductRepository
        
     }
 
-    public async Task<string> UpdateProductAsync(int productId, ProductGetDTO productGetDto)
-    {
-        var product = await GetProductByIdAsync(productId);
-        if (product is null)
+        public async Task<string> UpdateProductAsync(int productId, Product product, ProductGetDTO productGetDto)
         {
-            return "Product doesn't exist.";
-        }
-        product.ProductName = productGetDto.ProductName;
-        product.Description = productGetDto.ProductDescription;
-        product.Price = productGetDto.ProductPrice;
-        product.Stock = productGetDto.Stock;
-        // Update foreign keys
-        if (productGetDto.category != null)
-            product.CategoryId = productGetDto.category.categoryId;
+            try
+            {
+                product.ProductName = productGetDto.ProductName;
+                product.Description = productGetDto.ProductDescription;
+                product.Price = productGetDto.ProductPrice;
+                product.Stock = productGetDto.Stock;
+                // Update foreign keys
+                if (productGetDto.category != null)
+                    product.CategoryId = productGetDto.category.categoryId;
 
-        if (productGetDto.brand != null)
-            product.BrandId = productGetDto.brand.brandId;
-        await _context.SaveChangesAsync();
-        return $"Product ID: {productId} updated succesfully";
+                if (productGetDto.brand != null)
+                    product.BrandId = productGetDto.brand.brandId;
+                await _context.SaveChangesAsync();
+                return $"Product ID: {productId} updated succesfully";
+            }
+            catch (Exception e)
+            {
+                return $"Error updating product : {e.Message}";
+            }
+            
 
     }
 

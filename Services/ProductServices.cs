@@ -36,6 +36,11 @@ public class ProductServices
 
     public async Task<string> UpdateProductService(int productId, ProductGetDTO productGetDto)
     {
-        return await _productRepository.UpdateProductAsync(productId, productGetDto);
+        var product = await _productRepository.GetProductByIdAsync(productId);
+        if (product is null)
+        {
+            return "Product doesn't exist.";
+        }
+        return await _productRepository.UpdateProductAsync(productId, product, productGetDto);
     }
 }
