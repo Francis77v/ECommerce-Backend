@@ -6,14 +6,15 @@ using Backend.Models;
 public class ProductRepository
 {
     private readonly EntityDbContext _context;
-    public ProductRepository(EntityDbContext context)
+    private readonly ILogger<ProductRepository> _logger;
+    public ProductRepository(EntityDbContext context, ILogger<ProductRepository> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<List<ProductGetDTO>> GetProductsAsync()
     {
-      
         return await _context.Product
             .Include(p => p.Brand)
             .Include(p => p.Category)
@@ -37,11 +38,6 @@ public class ProductRepository
             .ToListAsync();
     }
 
-    public async Task<Product?> GetProductByIdAsync(int productId)
-    {
-        return await _context.Product.SingleOrDefaultAsync(p => p.ProductId == productId);
-    }
-
     public async Task<string> AddProductsAsync(ProductAddDTO p)
     {
         try
@@ -57,24 +53,28 @@ public class ProductRepository
             };
             _context.Product.Add(product);
             await _context.SaveChangesAsync();
-            return $"✅ Product '{product.ProductName}' added successfully with ID {product.ProductId}.";
+            return $"Product '{product.ProductName}' added successfully with ID {product.ProductId}.";
         }
         catch (Exception ex)
         {
-            return $"❌ Failed to add product: {ex.Message}";
+            return $"Failed to add product: {ex.Message}";
         }
     }
 
-    public async Task<string> DeleteProductAsync(int productId)
+    public async Task<string> DeleteProductAsync(Product product)
     {
-        var product = await GetProductByIdAsync(productId);
-        if (product is null)
+        try
         {
-            return "Product doesn't exist.";
+            _context.Product.Remove(product);
+            await _context.SaveChangesAsync();
+            return "Product deleted.";
         }
-        _context.Product.Remove(product);
-        await _context.SaveChangesAsync();
-        return "Product deleted";
+        catch (Exception e)
+        {
+            _logger.LogError(e, $"Database error while deleting product.");
+            return $"Failed to delete product : {e.Message}";
+        }
+       
     }
 
     public async Task<string> UpdateProductAsync(int productId, ProductGetDTO productGetDto)
@@ -102,6 +102,11 @@ public class ProductRepository
     public async Task<bool> CheckProductExist(string productName)
     {
         return await _context.Product.AnyAsync(p => p.ProductName == productName);
+    }
+    
+    public async Task<Product?> GetProductByIdAsync(int productId)
+    {
+        return await _context.Product.SingleOrDefaultAsync(p => p.ProductId == productId);
     }
 
 }

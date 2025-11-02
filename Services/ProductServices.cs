@@ -26,7 +26,12 @@ public class ProductServices
 
     public async Task<string> DeleteProductService(int productId)
     {
-        return await _productRepository.DeleteProductAsync(productId);
+        var product = await _productRepository.GetProductByIdAsync(productId);
+        if (product is null)
+        {
+            return "Product doesn't exist.";
+        }
+        return await _productRepository.DeleteProductAsync(product);
     }
 
     public async Task<string> UpdateProductService(int productId, ProductGetDTO productGetDto)

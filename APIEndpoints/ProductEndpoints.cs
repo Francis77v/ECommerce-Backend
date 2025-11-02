@@ -13,8 +13,16 @@ public static class ProductEndpoint
         
         Group.MapGet("/", async (ProductServices services) =>
         {
-            var products = await services.GetProductService();
-            return Results.Ok(products);
+            try
+            {
+                var products = await services.GetProductService();
+                return Results.Ok(products);
+            }
+            catch (Exception e)
+            {
+                return Results.BadRequest($"Error fetching database : {e.Message}");
+            }
+            
         }).WithName("GetProducts");
 
         Group.MapPost("/add", async (ProductAddDTO productAddDto, ProductServices services) =>
