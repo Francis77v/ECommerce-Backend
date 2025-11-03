@@ -9,10 +9,12 @@ using Backend.APIEndpoints;
 using Backend.Models.Seeders;
 using Backend.Repository;
 using Backend.Services;
-
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;     
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var configuration = builder.Configuration;
 // 1️⃣ Add services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -51,6 +53,11 @@ builder.Services.AddAuthentication(options =>
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
+    }).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddGoogle(GoogleDefaults.AuthenticationScheme, googleOptions =>
+    {
+        googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+        googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
     });
 
 // 3. Add Authorization
@@ -65,6 +72,21 @@ builder.Services.AddScoped<RegisterUserServices>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddLogging();
+
+// //google oauth2
+// builder.Services.AddAuthentication(options =>
+//     {
+//         options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+//         options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+//     })
+//     .AddCookie()
+//     .AddGoogle(googleOptions =>
+//     {
+//         googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+//         googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+//     });
+
+//app builder
 var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseAuthentication();

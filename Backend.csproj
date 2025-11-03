@@ -1,16 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>   
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    </PropertyGroup>
+      <UserSecretsId>f2c92a73-85d3-4772-bf3c-7cacbf85f1b8</UserSecretsId>
+  </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.9" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="2.3.0" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.9" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.9" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
           <PrivateAssets>all</PrivateAssets>
@@ -32,10 +35,6 @@
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Repository\" />
     </ItemGroup>
 
 </Project>
