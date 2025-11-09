@@ -110,7 +110,7 @@ if (app.Environment.IsDevelopment())
 app.MapHomePageEndpoints();
 app.MapProductEndpoints();
 app.MapUserEndpoints();
-
+app.MapOrderEndpoints();
 
 app.Run();
 
